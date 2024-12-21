@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify
 from pydub import AudioSegment
-import whisper
 import os
+from faster_whisper import WhisperModel
 
 app = Flask(__name__)
 
-# Load the Whisper model
-model = whisper.load_model("base")
+# Load the Faster Whisper model with compute_type="int8"
+model = WhisperModel("base", device="cpu", compute_type="int8")
 
 def speed_up_audio(input_path, output_path, speed=1.3):
     """Speed up audio playback."""
@@ -34,14 +34,17 @@ def transcribe():
         # Speed up the audio
         speed_up_audio(audio_path, sped_up_audio_path)
 
-        # Transcribe the sped-up audio with English language specified
-        result = model.transcribe(sped_up_audio_path, language='en')
+        # Transcribe the sped-up audio in segments
+        segments, _ = model.transcribe(sped_up_audio_path, language='en')
+
+        # Combine the transcription text from all segments
+        transcription = " ".join(segment.text for segment in segments)
     finally:
         # Delete the temporary files after processing
         os.remove(audio_path)
         os.remove(sped_up_audio_path)
 
-    return jsonify({"transcription": result["text"]})
+    return jsonify({"transcription": transcription})
 
 if __name__ == '__main__':
     app.run(debug=False)
