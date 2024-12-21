@@ -6,7 +6,7 @@ from faster_whisper import WhisperModel
 app = Flask(__name__)
 
 # Load the Faster Whisper model with compute_type="int8"
-model = WhisperModel("base", device="cpu", compute_type="int8")
+model = WhisperModel("base", compute_type="fp16")
 
 def speed_up_audio(input_path, output_path, speed=1.3):
     """Speed up audio playback."""
