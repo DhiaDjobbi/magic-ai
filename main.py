@@ -14,6 +14,10 @@ def speed_up_audio(input_path, output_path, speed=1.3):
     faster_audio = audio.speedup(playback_speed=speed)
     faster_audio.export(output_path, format="wav")
 
+@app.route('/hello', methods=['GET'])
+def hello():
+    return "Hello, World!"
+
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     if 'file' not in request.files:
