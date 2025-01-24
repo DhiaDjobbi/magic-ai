@@ -50,5 +50,6 @@ def transcribe():
 
     return jsonify({"transcription": transcription})
 
-if __name__ == '__main__':
-    app.run(debug=False, port=6789)
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=6789, debug=False)
+

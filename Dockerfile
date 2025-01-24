@@ -11,10 +11,13 @@ RUN apt-get update && apt-get install -y ffmpeg git
 COPY main.py requirements.txt ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
+
+# Set the FLASK_APP environment variable
+ENV FLASK_APP=main.py
 
 # Expose the port Flask will run on
-EXPOSE 6789
+EXPOSE 5000
 
 # Set the default command to run the Flask app
-CMD ["python", "main.py"]
+CMD ["flask", "run", "--host", "0.0.0.0"]
