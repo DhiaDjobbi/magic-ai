@@ -1,0 +1,9 @@
+chmod +x run.sh && ./run.sh
+gh codespace ports visibility 5000:public
+
+gh codespace delete --force
+
+docker system prune -a --volumes -f
+
+
+gh codespace stop --current
