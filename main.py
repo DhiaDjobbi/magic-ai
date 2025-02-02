@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from pydub import AudioSegment
 import os
 from faster_whisper import WhisperModel
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Load the Faster Whisper model with compute_type="int8"
 model = WhisperModel("base", compute_type="int8")
