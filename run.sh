@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Remove existing Docker container if it exists
+docker rm -f magic-ai-container 2>/dev/null
+echo "Removed existing Docker container if it existed."
+
 # Build the Docker image
 echo "Building the Docker image..."
 docker build -t magic-ai .
