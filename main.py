@@ -41,16 +41,21 @@ def transcribe():
         speed_up_audio(audio_path, sped_up_audio_path)
 
         # Transcribe the sped-up audio in segments
-        segments, _ = model.transcribe(sped_up_audio_path, language='en')
+        segments, _ = model.transcribe(sped_up_audio_path, language='en', word_timestamps=True)
 
-        # Combine the transcription text from all segments
-        transcription = " ".join(segment.text for segment in segments)
+        # Prepare the result as an array of transcriptions and their timestamps
+        result = [{
+            "start": segment.start,
+            "end": segment.end,
+            "text": segment.text
+        } for segment in segments]
+
     finally:
         # Delete the temporary files after processing
         os.remove(audio_path)
         os.remove(sped_up_audio_path)
 
-    return jsonify({"transcription": transcription})
+    return jsonify({"transcription": result})
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=6789, debug=False)
